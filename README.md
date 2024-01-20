@@ -70,7 +70,8 @@ sayHello :: ∀ given. OptionalMaybeArgs OptionalArgs2 _ given => Record given -
 sayHello givenArgs = 
   let 
     args = maybeArgs @OptionalArgs2 givenArgs
-    {name, shout} = {name: fromMaybe "PureScript user" args.name, shout: fromMaybe false args.shout}
+    name = fromMaybe "PureScript user" args.name
+    shout = fromMaybe false args.shout
     greeting = case args.age of
       Nothing -> "Hello "
       Just age | age < 20 -> "Hey there "
@@ -90,7 +91,8 @@ sayHello :: ∀ given. OptionalMaybeArgs OptionalArgs2 _ given => Record given -
 sayHello givenArgs = 
   let 
     args = maybeArgs @OptionalArgs2 givenArgs
-    {name, shout} = {name: fromMaybe "PureScript user" args.name, shout: fromMaybe false args.shoot} -- typo: shoot instead of shout
+    name = fromMaybe "PureScript user" args.name
+    shout = fromMaybe false args.shout
     greeting = case args.age of
       Nothing -> "Hello "
       Just age | age < 20 -> "Hey there "
@@ -120,7 +122,8 @@ sayHello :: ∀ given. OptionalMaybeArgs GivenArgs3 OptionalArgs3 given => Recor
 sayHello givenArgs = 
   let 
     args = maybeArgs @GivenArgs3 givenArgs
-    {name, shout} = {name: fromMaybe "PureScript user" args.name, shout: fromMaybe false args.shout}
+    name = fromMaybe "PureScript user" args.name
+    shout = fromMaybe false args.shout
     greeting = case args.age of
       Nothing -> "Hello "
       Just age | age < 20 -> "Hey there "

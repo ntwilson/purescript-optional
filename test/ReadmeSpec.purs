@@ -50,7 +50,8 @@ spec = do
           sayHello givenArgs = 
             let 
               args = maybeArgs @OptionalArgs2 givenArgs
-              {name, shout} = {name: fromMaybe "PureScript user" args.name, shout: fromMaybe false args.shout}
+              name = fromMaybe "PureScript user" args.name
+              shout = fromMaybe false args.shout
               greeting = case args.age of
                 Nothing -> "Hello "
                 Just age | age < 20 -> "Hey there "
@@ -69,7 +70,8 @@ spec = do
           _sayHello givenArgs = 
             let 
               args = maybeArgs @OptionalArgs2 givenArgs
-              {name, shout} = {name: fromMaybe "PureScript user" args.name, shout: fromMaybe false args.shoot}
+              name = fromMaybe "PureScript user" args.name
+              shout = fromMaybe false args.shout
               greeting = case args.age of
                 Nothing -> "Hello "
                 Just age | age < 20 -> "Hey there "
@@ -90,7 +92,8 @@ spec = do
           sayHello givenArgs = 
             let 
               args = maybeArgs @GivenArgs3 givenArgs
-              {name, shout} = {name: fromMaybe "PureScript user" args.name, shout: fromMaybe false args.shout}
+              name = fromMaybe "PureScript user" args.name
+              shout = fromMaybe false args.shout
               greeting = case args.age of
                 Nothing -> "Hello "
                 Just age | age < 20 -> "Hey there "
