@@ -84,7 +84,7 @@ sayHello {shout: true, age: 15} `shouldEqual` "Hey there PureScript user!!!"
 sayHello {name: "Susan", age: 30} `shouldEqual` "Good day Susan."
 ```
 
-By using the wildcard `_` in the type signature of `sayHello2`, we don't need to specify the return type of `maybeArgs` (which in this case would be `{ name :: Maybe String, age :: Maybe Int, shout :: Maybe Boolean }`), but it comes at the cost of slightly worse error messages. The compiler doesn't determine the return type of `maybeArgs` until it commits to an `OptionalMaybeArgs` instance, which it can't do until `given` is known. That means that if you introduce a bug into `sayHello`, the error message won't show up in `sayHello`, but the call site. 
+By using the wildcard `_` in the type signature of `sayHello2`, we don't need to specify the return type of `maybeArgs` (which in this case would be `{ name :: Maybe String, age :: Maybe Int, shout :: Maybe Boolean }`), but it comes at the cost of slightly worse error messages. The compiler doesn't determine the return type of `maybeArgs` until it commits to an `OptionalMaybeArgs` instance, which it can't do until `given` is known. That means that if you introduce a bug into `sayHello`, the error message won't show up in `sayHello`, but rather at the call site. 
 
 ```pureScript
 sayHello :: ∀ given. OptionalMaybeArgs OptionalArgs2 _ given => Record given -> String
@@ -92,7 +92,7 @@ sayHello givenArgs =
   let 
     args = maybeArgs @OptionalArgs2 givenArgs
     name = fromMaybe "PureScript user" args.name
-    shout = fromMaybe false args.shout
+    shout = fromMaybe false args.shoot -- typo: `shoot` instead of `shout` but no compile error
     greeting = case args.age of
       Nothing -> "Hello "
       Just age | age < 20 -> "Hey there "
