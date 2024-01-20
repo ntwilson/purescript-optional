@@ -71,7 +71,7 @@ spec = do
             let 
               args = maybeArgs @OptionalArgs2 givenArgs
               name = fromMaybe "PureScript user" args.name
-              shout = fromMaybe false args.shout
+              shout = fromMaybe false args.shoot
               greeting = case args.age of
                 Nothing -> "Hello "
                 Just age | age < 20 -> "Hey there "
@@ -79,9 +79,9 @@ spec = do
             in 
               greeting <> name <> if shout then "!!!" else "."
 
-        -- sayHello {} `shouldEqual` "Hello PureScript user."
-        -- sayHello {shout: true, age: 15} `shouldEqual` "Hey there PureScript user!!!"
-        -- sayHello {name: "Susan", age: 30} `shouldEqual` "Good day Susan."
+        -- _sayHello {} `shouldEqual` "Hello PureScript user."
+        -- _sayHello {shout: true, age: 15} `shouldEqual` "Hey there PureScript user!!!"
+        -- _sayHello {name: "Susan", age: 30} `shouldEqual` "Good day Susan."
 
         pure unit
 
