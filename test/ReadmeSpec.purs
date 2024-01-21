@@ -14,19 +14,25 @@ type OptionalArgs =
 
 type OptionalArgs2 =
   ( name :: String
+  , age :: Maybe Int
+  , shout :: Boolean
+  )
+
+type OptionalArgs3 =
+  ( name :: String
   , age :: Int
   , shout :: Boolean
   )
 
-type OptionalArgs3F :: (Type -> Type) -> Row Type
-type OptionalArgs3F f =
+type OptionalArgs4F :: (Type -> Type) -> Row Type
+type OptionalArgs4F f =
   ( name :: f String
   , age :: f Int
   , shout :: f Boolean
   )
 
-type GivenArgs3 = OptionalArgs3F Unlifted
-type OptionalArgs3 = OptionalArgs3F Maybe
+type GivenArgs4 = OptionalArgs4F Unlifted
+type OptionalArgs4 = OptionalArgs4F Maybe
 
 spec :: Spec Unit
 spec = do
@@ -46,10 +52,10 @@ spec = do
     describe "Snippet 2" do
       it "should run as expected" do
         let 
-          sayHello :: ∀ given. OptionalMaybeArgs OptionalArgs2 _ given => Record given -> String
+          sayHello :: ∀ given. OptionalMaybeArgs OptionalArgs3 _ given => Record given -> String
           sayHello givenArgs = 
             let 
-              args = maybeArgs @OptionalArgs2 givenArgs
+              args = maybeArgs @OptionalArgs3 givenArgs
               name = fromMaybe "PureScript user" args.name
               shout = fromMaybe false args.shout
               greeting = case args.age of
@@ -66,10 +72,10 @@ spec = do
     describe "Snippet 3" do
       it "should fail to compile" do
         let 
-          _sayHello :: ∀ given. OptionalMaybeArgs OptionalArgs2 _ given => Record given -> String
+          _sayHello :: ∀ given. OptionalMaybeArgs OptionalArgs3 _ given => Record given -> String
           _sayHello givenArgs = 
             let 
-              args = maybeArgs @OptionalArgs2 givenArgs
+              args = maybeArgs @OptionalArgs3 givenArgs
               name = fromMaybe "PureScript user" args.name
               shout = fromMaybe false args.shoot
               greeting = case args.age of
@@ -88,10 +94,10 @@ spec = do
     describe "Snippet 4" do
       it "should run as expected" do
         let 
-          sayHello :: ∀ given. OptionalMaybeArgs GivenArgs3 OptionalArgs3 given => Record given -> String
+          sayHello :: ∀ given. OptionalMaybeArgs GivenArgs4 OptionalArgs4 given => Record given -> String
           sayHello givenArgs = 
             let 
-              args = maybeArgs @GivenArgs3 givenArgs
+              args = maybeArgs @GivenArgs4 givenArgs
               name = fromMaybe "PureScript user" args.name
               shout = fromMaybe false args.shout
               greeting = case args.age of

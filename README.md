@@ -66,10 +66,16 @@ sayHello {name: "Susan", age: Just 30} `shouldEqual` "Good day Susan."
 But this is inconvenient for the caller, who has to use `Just` for the parameter, and it exposes the implementation details of your function (some optional arguments are `Maybe` and others aren't). This is the main case that this library aims to simplify. You may use the `OptionalMaybeArgs` class with its method `maybeArgs` to make the optional values all `Maybe` within your function without the caller having to use `Just`. The simplest way to do this would be:
 
 ```purescript
-sayHello :: ∀ given. OptionalMaybeArgs OptionalArgs2 _ given => Record given -> String
+type OptionalArgs3 =
+  ( name :: String
+  , age :: Int
+  , shout :: Boolean
+  )
+
+sayHello :: ∀ given. OptionalMaybeArgs OptionalArgs3 _ given => Record given -> String
 sayHello givenArgs = 
   let 
-    args = maybeArgs @OptionalArgs2 givenArgs
+    args = maybeArgs @OptionalArgs3 givenArgs
     name = fromMaybe "PureScript user" args.name
     shout = fromMaybe false args.shout
     greeting = case args.age of
@@ -84,13 +90,13 @@ sayHello {shout: true, age: 15} `shouldEqual` "Hey there PureScript user!!!"
 sayHello {name: "Susan", age: 30} `shouldEqual` "Good day Susan."
 ```
 
-By using the wildcard `_` in the type signature of `sayHello2`, we don't need to specify the return type of `maybeArgs` (which in this case would be `{ name :: Maybe String, age :: Maybe Int, shout :: Maybe Boolean }`), but it comes at the cost of slightly worse error messages. The compiler doesn't determine the return type of `maybeArgs` until it commits to an `OptionalMaybeArgs` instance, which it can't do until `given` is known. That means that if you introduce a bug into `sayHello`, the error message won't show up in `sayHello`, but rather at the call site. 
+By using the wildcard `_` in the type signature of `sayHello`, we don't need to specify the return type of `maybeArgs` (which in this case would be `{ name :: Maybe String, age :: Maybe Int, shout :: Maybe Boolean }`), but it comes at the cost of slightly worse error messages. The compiler doesn't determine the return type of `maybeArgs` until it commits to an `OptionalMaybeArgs` instance, which it can't do until `given` is known. That means that if you introduce a bug into `sayHello`, the error message won't show up in `sayHello`, but rather at the call site. 
 
 ```pureScript
-sayHello :: ∀ given. OptionalMaybeArgs OptionalArgs2 _ given => Record given -> String
+sayHello :: ∀ given. OptionalMaybeArgs OptionalArgs3 _ given => Record given -> String
 sayHello givenArgs = 
   let 
-    args = maybeArgs @OptionalArgs2 givenArgs
+    args = maybeArgs @OptionalArgs3 givenArgs
     name = fromMaybe "PureScript user" args.name
     shout = fromMaybe false args.shoot -- typo: `shoot` instead of `shout` but no compile error
     greeting = case args.age of
@@ -108,20 +114,20 @@ sayHello {} `shouldEqual` "Hello PureScript user." -- compile error here instead
 For this reason, it can be good to provide an annotation for the `Maybe` version of all the optional parameters. This library advocates using the strategy suggested in [this discourse post](https://discourse.purescript.org/t/is-it-possible-to-define-type-that-enchances-record-with-maybe/1780/2?u=ntwilson), and provides an `Unlifted` alias to do just that:
 
 ```purescript
-type OptionalArgs3F :: (Type -> Type) -> Row Type
-type OptionalArgs3F f =
+type OptionalArgs4F :: (Type -> Type) -> Row Type
+type OptionalArgs4F f =
   ( name :: f String
   , age :: f Int
   , shout :: f Boolean
   )
 
-type GivenArgs3 = OptionalArgs3F Unlifted
-type OptionalArgs3 = OptionalArgs3F Maybe
+type GivenArgs4 = OptionalArgs4F Unlifted
+type OptionalArgs4 = OptionalArgs4F Maybe
 
-sayHello :: ∀ given. OptionalMaybeArgs GivenArgs3 OptionalArgs3 given => Record given -> String
+sayHello :: ∀ given. OptionalMaybeArgs GivenArgs4 OptionalArgs4 given => Record given -> String
 sayHello givenArgs = 
   let 
-    args = maybeArgs @GivenArgs3 givenArgs
+    args = maybeArgs @GivenArgs4 givenArgs
     name = fromMaybe "PureScript user" args.name
     shout = fromMaybe false args.shout
     greeting = case args.age of

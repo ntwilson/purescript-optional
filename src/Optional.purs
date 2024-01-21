@@ -2,7 +2,7 @@ module Optional where
 
 import Prelude
 
-import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Maybe (Maybe(..))
 import Data.Symbol (class IsSymbol, reflectSymbol)
 import Prim.Row (class Nub, class Union)
 import Prim.Row as Row
